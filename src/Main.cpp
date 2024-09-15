@@ -1,5 +1,4 @@
 #include "Events.h"
-#include "Hooks.h"
 #include "Logging.h"
 #include "Settings.h"
 
@@ -7,8 +6,8 @@ void Listener(SKSE::MessagingInterface::Message* message) noexcept
 {
     if (message->type == SKSE::MessagingInterface::kDataLoaded) {
         Settings::LoadSettings();
-        Events::EquipEventHandler::Register();
-        Hooks::Install();
+        Settings::LoadForms();
+        Events::OnHitHandler::Register();
     }
 }
 

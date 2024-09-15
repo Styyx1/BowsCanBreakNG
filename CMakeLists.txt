@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.30)
 message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
 
 project(
-  PluginName
-  VERSION 0.0.1
+  BowsCanBreakNG
+  VERSION 1.0.0
   LANGUAGES CXX
 )
 set(CMAKE_CXX_STANDARD 23)
@@ -44,7 +44,7 @@ find_package(CommonLibSSE CONFIG REQUIRED)
 
 add_commonlibsse_plugin(
   ${PROJECT_NAME}
-  AUTHOR AuthorName
+  AUTHOR Styyx
   SOURCES ${headers} ${sources}
 )
 
@@ -85,6 +85,11 @@ add_custom_command(
   ${CMAKE_COMMAND} -E copy $<TARGET_PDB_FILE:${PROJECT_NAME}> ${CMAKE_CURRENT_SOURCE_DIR}/contrib/Plugin${BUILD_NAME}/skse/plugins
   COMMAND
   ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/contrib/Config/${PROJECT_NAME}.ini ${CMAKE_CURRENT_SOURCE_DIR}/contrib/Plugin${BUILD_NAME}/skse/plugins
+  COMMAND
+  ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> D:/NewADT/mods/BowsCanBreakNG/skse/plugins
+  COMMAND
+  ${CMAKE_COMMAND} -E copy $<TARGET_PDB_FILE:${PROJECT_NAME}> D:/NewADT/mods/BowsCanBreakNG/skse/plugins
+  
 )
 
 file(GLOB_RECURSE OUTPUT_DLLS ${CMAKE_CURRENT_SOURCE_DIR}/contrib/**/*.dll)

@@ -1,10 +1,15 @@
 #pragma once
+#include "Utility.h"
+#include "Settings.h"
 
 namespace Events
 {
-    class EquipEventHandler : public EventSingleton<EquipEventHandler, RE::TESEquipEvent>
+
+
+    class OnHitHandler : public EventSingleton<OnHitHandler, RE::TESHitEvent>
     {
     public:
-        RE::BSEventNotifyControl ProcessEvent(const RE::TESEquipEvent* a_event, RE::BSTEventSource<RE::TESEquipEvent>* a_eventSource) noexcept override;
+        RE::BSEventNotifyControl ProcessEvent(const RE::TESHitEvent* a_event, RE::BSTEventSource<RE::TESHitEvent>* a_eventSource) noexcept override;
     };
+
 } // namespace Events
