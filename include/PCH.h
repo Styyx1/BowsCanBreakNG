@@ -24,7 +24,6 @@
 #include <cuchar>
 #include <cwchar>
 #include <cwctype>
-
 // C++ standard library headers
 #include <algorithm>
 #include <any>

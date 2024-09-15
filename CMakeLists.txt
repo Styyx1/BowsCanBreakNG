@@ -59,7 +59,7 @@ target_include_directories(
   ${SIMPLEINI_INCLUDE_DIRS}
   PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
+) 
 
 target_precompile_headers(
   ${PROJECT_NAME}

@@ -14,8 +14,8 @@
         "kind": "git",
         "baseline": "aa7e28404e087bf808be89fdbe9a696dcd6545b5",
         "repository": "https://github.com/ThirdEyeSqueegee/vcpkg-ports",
-        "packages": ["openvr", "spdlog"]
+        "packages": [ "openvr", "spdlog" ]
       }
     ]
   }
-}
+}  

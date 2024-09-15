@@ -34,7 +34,6 @@ public:
 
         return nullptr;
     }
-
     inline static void ProcessWeaponLoss(RE::Actor* defender,  RE::TESObjectWEAP* defender_weap) {
         Settings* settings = Settings::GetSingleton();
         if (settings->destry) {

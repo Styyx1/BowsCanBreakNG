@@ -4,8 +4,6 @@
 
 namespace Events
 {
-
-
     class OnHitHandler : public EventSingleton<OnHitHandler, RE::TESHitEvent>
     {
     public:
