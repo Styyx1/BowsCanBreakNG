@@ -9,5 +9,6 @@ public:
     inline static bool debug_logging{};
     inline static bool destry{};
     inline static bool spawn_wood{};
+    inline static float mass_threshold;
     inline static RE::TESObjectMISC* firewood;
 };

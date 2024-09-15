@@ -12,6 +12,7 @@ void Settings::LoadSettings() noexcept
     debug_logging = ini.GetBoolValue("Log", "Debug");
     destry = ini.GetBoolValue("General", "bDestroyBow");
     spawn_wood = ini.GetBoolValue("General", "bSpawnWood");
+    mass_threshold = ini.GetDoubleValue("General", "fMinMassRequirement", 2.0);
 
     if (debug_logging) {
         spdlog::set_level(spdlog::level::debug);

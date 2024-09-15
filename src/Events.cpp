@@ -17,7 +17,8 @@ namespace Events
             return RE::BSEventNotifyControl::kContinue;
         }
         Utility* util = Utility::GetSingleton();
-        if (a_event->flags.any(HitFlag::kPowerAttack) && a_event->target && a_event->source || aggressor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kMass) >= 2.0) {
+        const Settings* settings = Settings::GetSingleton();
+        if (a_event->flags.any(HitFlag::kPowerAttack) && a_event->source || aggressor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kMass) >= settings->mass_threshold) {
             logger::debug("aggressor mass is {}", aggressor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kMass));
             auto attacking_weap = RE::TESForm::LookupByID<RE::TESObjectWEAP>(a_event->source);
             if (!defender || !attacking_weap || !defender->GetActorRuntimeData().currentProcess || !defender->GetActorRuntimeData().currentProcess->high || !attacking_weap->IsMelee() || !defender->Get3D())
