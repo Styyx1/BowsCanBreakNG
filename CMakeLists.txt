@@ -89,6 +89,8 @@ add_custom_command(
   ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> D:/NewADT/mods/BowsCanBreakNG/skse/plugins
   COMMAND
   ${CMAKE_COMMAND} -E copy $<TARGET_PDB_FILE:${PROJECT_NAME}> D:/NewADT/mods/BowsCanBreakNG/skse/plugins
+  COMMAND
+  ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/contrib/Config/${PROJECT_NAME}.ini D:/NewADT/mods/BowsCanBreakNG/skse/plugins
   
 )
 

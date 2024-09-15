@@ -40,11 +40,11 @@ namespace Events
                 logger::debug("{} has nothing equipped", defender->GetName());
                 return RE::BSEventNotifyControl::kContinue;
             }
-            if (defender_weap && defender_weap->IsBow()) {
+            if (defender_weap && defender_weap->IsBow() || defender_weap->IsCrossbow()) {
                 logger::debug("{}'s weapon is a bow", defender_weap->GetName());
                 logger::debug("aggressor is {}", aggressor->GetName());
                 logger::debug("{} has {} equipped", defender->GetName(), defender_weap->GetName());
-                if (defender_weap->HasKeywordString("REQ_BowBreakable") && defender->AsActorState()->GetWeaponState() == RE::WEAPON_STATE::kDrawn) {
+                if ((defender_weap->HasKeywordString("REQ_BowBreakable") || defender_weap->HasKeywordString("BowBreakable")) && defender->AsActorState()->GetWeaponState() == RE::WEAPON_STATE::kDrawn) {
                     logger::debug("weapon will get damaged");
                     util->ProcessWeaponLoss(defender, defender_weap);
                 } 
