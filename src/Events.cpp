@@ -44,9 +44,9 @@ namespace Events
                 logger::debug("{}'s weapon is a bow", defender_weap->GetName());
                 logger::debug("aggressor is {}", aggressor->GetName());
                 logger::debug("{} has {} equipped", defender->GetName(), defender_weap->GetName());
-                if ((defender_weap->HasKeywordString("REQ_BowBreakable") || defender_weap->HasKeywordString("BowBreakable")) && defender->AsActorState()->GetWeaponState() == RE::WEAPON_STATE::kDrawn) {
-                    logger::debug("weapon will get damaged");
-                    util->ProcessWeaponLoss(defender, defender_weap);
+                if ((defender_weap->HasKeywordString("REQ_BowBreakable") || defender_weap->HasKeywordString("BowBreakable")) && (defender->AsActorState()->GetAttackState() == RE::ATTACK_STATE_ENUM::kBowDraw || defender->AsActorState()->GetAttackState() == RE::ATTACK_STATE_ENUM::kBowDrawn)) {
+                    logger::debug("weapon will get damaged");                    
+                    util->ProcessWeaponLoss(defender, defender_weap);                    
                 } 
             }          
         }

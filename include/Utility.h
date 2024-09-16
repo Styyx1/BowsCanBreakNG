@@ -36,7 +36,9 @@ public:
     }
     inline static void ProcessWeaponLoss(RE::Actor* defender,  RE::TESObjectWEAP* defender_weap) {
         Settings* settings = Settings::GetSingleton();
+        auto eqman = RE::ActorEquipManager::GetSingleton();
         if (settings->destry) {
+            eqman->UnequipObject(defender, defender_weap, nullptr, 1, nullptr, false, true, true, true);
             defender->RemoveItem(defender_weap, 1, RE::ITEM_REMOVE_REASON::kRemove, nullptr, nullptr, nullptr);
             logger::debug("destroyed {}", defender_weap->GetName());
             if (settings->spawn_wood) {
@@ -44,6 +46,7 @@ public:
             }
         }
         else {
+            eqman->UnequipObject(defender, defender_weap, nullptr, 1, nullptr, false, true, true, true);
             defender->RemoveItem(defender_weap, 1, RE::ITEM_REMOVE_REASON::kDropping, nullptr, nullptr, nullptr);
             logger::debug("dropped {}", defender_weap->GetName());
         }        
