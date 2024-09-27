@@ -21,7 +21,7 @@ namespace Events
         if (a_event->flags.any(HitFlag::kPowerAttack) && a_event->source || aggressor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kMass) >= settings->mass_threshold) {
             logger::debug("aggressor mass is {}", aggressor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kMass));
             auto attacking_weap = RE::TESForm::LookupByID<RE::TESObjectWEAP>(a_event->source);
-            if (!defender || !attacking_weap || !defender->GetActorRuntimeData().currentProcess || !defender->GetActorRuntimeData().currentProcess->high || !attacking_weap->IsMelee() || !defender->Get3D())
+            if (!defender || !attacking_weap || !defender->GetActorRuntimeData().currentProcess || !defender->GetActorRuntimeData().currentProcess->high || !attacking_weap->IsMelee() || !defender->Get3D() || attacking_weap->IsHandToHandMelee())
             {
                 logger::debug("power attack event, first continue");
                 return RE::BSEventNotifyControl::kContinue;
@@ -36,7 +36,7 @@ namespace Events
                 return RE::BSEventNotifyControl::kContinue;
             }
             auto defender_weap = util->getWieldingWeapon(defender);
-            if (!defender_weap) {
+            if (!defender_weap || defender_weap->IsHandToHandMelee()) {
                 logger::debug("{} has nothing equipped", defender->GetName());
                 return RE::BSEventNotifyControl::kContinue;
             }
