@@ -21,7 +21,7 @@ namespace Events
         if (settings->use_power_attack){
             if (a_event->flags.any(HitFlag::kPowerAttack) && a_event->source || aggressor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kMass) >= settings->mass_threshold) {
                 logger::debug("aggressor mass is {}", aggressor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kMass));
-                auto attacking_weap = RE::TESForm::LookupByID<RE::TESObjectWEAP>(a_event->source);
+                auto attacking_weap = Utility::getWieldingWeapon(aggressor);
                 if (!defender || !attacking_weap || !defender->GetActorRuntimeData().currentProcess || !defender->GetActorRuntimeData().currentProcess->high || !attacking_weap->IsMelee() || !defender->Get3D() || attacking_weap->IsHandToHandMelee())
                 {
                     logger::debug("power attack event, first continue");
@@ -55,7 +55,8 @@ namespace Events
         }
         else if (a_event->source || aggressor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kMass) >= settings->mass_threshold) {
             logger::debug("aggressor mass is {}", aggressor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kMass));
-            auto attacking_weap = RE::TESForm::LookupByID<RE::TESObjectWEAP>(a_event->source);
+            //auto attacking_weap = RE::TESForm::LookupByID<RE::TESObjectWEAP>(a_event->source);
+            auto attacking_weap = Utility::getWieldingWeapon(aggressor);
             if (!defender || !attacking_weap || !defender->GetActorRuntimeData().currentProcess || !defender->GetActorRuntimeData().currentProcess->high || !attacking_weap->IsMelee() || !defender->Get3D() || attacking_weap->IsHandToHandMelee())
             {
                 logger::debug("normal attack event, first continue");
