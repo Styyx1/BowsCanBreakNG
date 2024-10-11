@@ -18,12 +18,47 @@ namespace Events
         }
         Utility* util = Utility::GetSingleton();
         const Settings* settings = Settings::GetSingleton();
-        if (a_event->flags.any(HitFlag::kPowerAttack) && a_event->source || aggressor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kMass) >= settings->mass_threshold) {
+        if (settings->use_power_attack){
+            if (a_event->flags.any(HitFlag::kPowerAttack) && a_event->source || aggressor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kMass) >= settings->mass_threshold) {
+                logger::debug("aggressor mass is {}", aggressor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kMass));
+                auto attacking_weap = RE::TESForm::LookupByID<RE::TESObjectWEAP>(a_event->source);
+                if (!defender || !attacking_weap || !defender->GetActorRuntimeData().currentProcess || !defender->GetActorRuntimeData().currentProcess->high || !attacking_weap->IsMelee() || !defender->Get3D() || attacking_weap->IsHandToHandMelee())
+                {
+                    logger::debug("power attack event, first continue");
+                    return RE::BSEventNotifyControl::kContinue;
+                }
+                if (!aggressor || !aggressor->GetActorRuntimeData().currentProcess || !aggressor->GetActorRuntimeData().currentProcess->high) {
+                    logger::debug("Attack Actor Not Found!");
+                    return RE::BSEventNotifyControl::kContinue;
+                }
+                auto data_aggressor = aggressor->GetActorRuntimeData().currentProcess->high->attackData;
+                if (!data_aggressor) {
+                    logger::debug("Attacker Attack Data Not Found!");
+                    return RE::BSEventNotifyControl::kContinue;
+                }
+                auto defender_weap = util->getWieldingWeapon(defender);
+                if (!defender_weap || defender_weap->IsHandToHandMelee()) {
+                    logger::debug("{} has nothing equipped", defender->GetName());
+                    return RE::BSEventNotifyControl::kContinue;
+                }
+                if (defender_weap && defender_weap->IsBow() || defender_weap->IsCrossbow()) {
+                    logger::debug("{}'s weapon is a bow", defender_weap->GetName());
+                    logger::debug("aggressor is {}", aggressor->GetName());
+                    logger::debug("{} has {} equipped", defender->GetName(), defender_weap->GetName());
+                    if ((defender_weap->HasKeywordString("REQ_BowBreakable") || defender_weap->HasKeywordString("BowBreakable")) && (defender->AsActorState()->GetAttackState() == RE::ATTACK_STATE_ENUM::kBowDraw || defender->AsActorState()->GetAttackState() == RE::ATTACK_STATE_ENUM::kBowDrawn)) {
+                        logger::debug("weapon will get damaged");                    
+                        util->ProcessWeaponLoss(defender, defender_weap);                    
+                    } 
+                }            
+            }
+
+        }
+        else if (a_event->source || aggressor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kMass) >= settings->mass_threshold) {
             logger::debug("aggressor mass is {}", aggressor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kMass));
             auto attacking_weap = RE::TESForm::LookupByID<RE::TESObjectWEAP>(a_event->source);
             if (!defender || !attacking_weap || !defender->GetActorRuntimeData().currentProcess || !defender->GetActorRuntimeData().currentProcess->high || !attacking_weap->IsMelee() || !defender->Get3D() || attacking_weap->IsHandToHandMelee())
             {
-                logger::debug("power attack event, first continue");
+                logger::debug("normal attack event, first continue");
                 return RE::BSEventNotifyControl::kContinue;
             }
             if (!aggressor || !aggressor->GetActorRuntimeData().currentProcess || !aggressor->GetActorRuntimeData().currentProcess->high) {
@@ -48,7 +83,7 @@ namespace Events
                     logger::debug("weapon will get damaged");                    
                     util->ProcessWeaponLoss(defender, defender_weap);                    
                 } 
-            }          
+            }            
         }
         return RE::BSEventNotifyControl::kContinue;
     }
